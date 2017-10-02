@@ -14,6 +14,7 @@ const wrapperStyles = {
   width: "100%",
   maxWidth: 980,
   margin: "0 auto",
+  border: '5px solid red'
 }
 
 const cities = [
@@ -61,6 +62,11 @@ class AnimatedMap extends Component {
     })
   }
   render() {
+    const yOffset = -20 / this.state.zoom;
+    const markerLocation = this.state.center;
+
+    console.log(`yOffset: ${yOffset}`);
+
     return (
       <div style={wrapperStyles}>
         <button onClick={this.handleZoomIn}>
@@ -86,7 +92,7 @@ class AnimatedMap extends Component {
           >
           {({zoom,x,y}) => (
             <ComposableMap
-              projectionConfig={{ scale: 205 }}
+              projectionConfig={{ scale: 205, yOffset: yOffset }}
               width={980}
               height={551}
               style={{
@@ -126,21 +132,18 @@ class AnimatedMap extends Component {
                   ))}
                 </Geographies>
                 <Markers>
-                  {cities.map((city, i) => (
-                    <Marker
-                      key={i}
-                      marker={city}
-                      onClick={this.handleCityClick}
-                      >
-                      <circle
-                        cx={0}
-                        cy={0}
-                        r={6}
-                        fill="#FF5722"
-                        stroke="#DF3702"
-                      />
-                    </Marker>
-                  ))}
+                  <Marker
+                    key={ 'marker' }
+                    marker={{ coordinates: markerLocation }}
+                    >
+                    <circle
+                      cx={0}
+                      cy={0}
+                      r={6}
+                      fill="#FF5722"
+                      stroke="#DF3702"
+                    />
+                  </Marker>
                 </Markers>
               </ZoomableGroup>
             </ComposableMap>
